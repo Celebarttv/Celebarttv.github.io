@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title> Models </title>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/js/all.js">
+  <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+  <link rel="stylesheet" type="text/css" href="css/model.css">
+	<link rel="shortcut icon" href="images/favicon.png" type="image/vnd.microsoft.icon">
+
+
+</head>
+
+<body id="main">
+
+
+  <!-- ********************************* -->
+
+  <script id="wpcp_disable_selection" type="text/javascript">
+var image_save_msg='You are not allowed to save images!';
+  var no_menu_msg='Context Menu disabled!';
+  var smessage = "Content is protected !!";
+
+function disableEnterKey(e)
+{
+  var elemtype = e.target.tagName;
+  
+  elemtype = elemtype.toUpperCase();
+  
+  if (elemtype == "TEXT" || elemtype == "TEXTAREA" || elemtype == "INPUT" || elemtype == "PASSWORD" || elemtype == "SELECT" || elemtype == "OPTION" || elemtype == "EMBED")
+  {
+    elemtype = 'TEXT';
+  }
+  
+  if (e.ctrlKey){
+     var key;
+     if(window.event)
+          key = window.event.keyCode;     //IE
+     else
+          key = e.which;     //firefox (97)
+    //if (key != 17) alert(key);
+     if (elemtype!= 'TEXT' && (key == 97 || key == 65 || key == 67 || key == 99 || key == 88 || key == 120 || key == 26 || key == 85  || key == 86 || key == 83 || key == 43 || key == 73))
+     {
+    if(wccp_free_iscontenteditable(e)) return true;
+    show_wpcp_message('You are not allowed to copy content or view source');
+    return false;
+     }else
+      return true;
+     }
+}
+
+
+/*For contenteditable tags*/
+function wccp_free_iscontenteditable(e)
+{
+  var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+    
+  var target = e.target || e.srcElement;
+
+  var elemtype = e.target.nodeName;
+  
+  elemtype = elemtype.toUpperCase();
+  
+  var iscontenteditable = "false";
+    
+  if(typeof target.getAttribute!="undefined" ) iscontenteditable = target.getAttribute("contenteditable"); // Return true or false as string
+  
+  var iscontenteditable2 = false;
+  
+  if(typeof target.isContentEditable!="undefined" ) iscontenteditable2 = target.isContentEditable; // Return true or false as boolean
+
+  if(target.parentElement.isContentEditable) iscontenteditable2 = true;
+  
+  if (iscontenteditable == "true" || iscontenteditable2 == true)
+  {
+    if(typeof target.style!="undefined" ) target.style.cursor = "text";
+    
+    return true;
+  }
+}
+
+////////////////////////////////////
+function disable_copy(e)
+{ 
+  var e = e || window.event; // also there is no e.target property in IE. instead IE uses window.event.srcElement
+  
+  var elemtype = e.target.tagName;
+  
+  elemtype = elemtype.toUpperCase();
+  
+  if (elemtype == "TEXT" || elemtype == "TEXTAREA" || elemtype == "INPUT" || elemtype == "PASSWORD" || elemtype == "SELECT" || elemtype == "OPTION" || elemtype == "EMBED")
+  {
+    elemtype = 'TEXT';
+  }
+  
+  if(wccp_free_iscontenteditable(e)) return true;
+  
+  var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
+  
+  var checker_IMG = '';
+  if (elemtype == "IMG" && checker_IMG == 'checked' && e.detail >= 2) {show_wpcp_message(alertMsg_IMG);return false;}
+  if (elemtype != "TEXT")
+  {
+    if (smessage !== "" && e.detail == 2)
+      show_wpcp_message(smessage);
+    
+    if (isSafari)
+      return true;
+    else
+      return false;
+  } 
+}
+
+//////////////////////////////////////////
+function disable_copy_ie()
+{
+  var e = e || window.event;
+  var elemtype = window.event.srcElement.nodeName;
+  elemtype = elemtype.toUpperCase();
+  if(wccp_free_iscontenteditable(e)) return true;
+  if (elemtype == "IMG") {show_wpcp_message(alertMsg_IMG);return false;}
+  if (elemtype != "TEXT" && elemtype != "TEXTAREA" && elemtype != "INPUT" && elemtype != "PASSWORD" && elemtype != "SELECT" && elemtype != "OPTION" && elemtype != "EMBED")
+  {
+    return false;
+  }
+} 
+function reEnable()
+{
+  return true;
+}
+document.onkeydown = disableEnterKey;
+document.onselectstart = disable_copy_ie;
+if(navigator.userAgent.indexOf('MSIE')==-1)
+{
+  document.onmousedown = disable_copy;
+  document.onclick = reEnable;
+}
+function disableSelection(target)
+{
+    //For IE This code will work
+    if (typeof target.onselectstart!="undefined")
+    target.onselectstart = disable_copy_ie;
+    
+    //For Firefox This code will work
+    else if (typeof target.style.MozUserSelect!="undefined")
+    {target.style.MozUserSelect="none";}
+    
+    //All other  (ie: Opera) This code will work
+    else
+    target.onmousedown=function(){return false}
+    target.style.cursor = "default";
+}
+//Calling the JS function directly just after body load
+window.onload = function(){disableSelection(document.body);};
+
+//////////////////special for safari Start////////////////
+var onlongtouch;
+var timer;
+var touchduration = 1000; //length of time we want the user to touch before we do something
+
+var elemtype = "";
+function touchstart(e) {
+  var e = e || window.event;
+  // also there is no e.target property in IE.
+  // instead IE uses window.event.srcElement
+    var target = e.target || e.srcElement;
+  
+  elemtype = window.event.srcElement.nodeName;
+  
+  elemtype = elemtype.toUpperCase();
+  
+  if(!wccp_pro_is_passive()) e.preventDefault();
+  if (!timer) {
+    timer = setTimeout(onlongtouch, touchduration);
+  }
+}
+
+function touchend() {
+    //stops short touches from firing the event
+    if (timer) {
+        clearTimeout(timer);
+        timer = null;
+    }
+  onlongtouch();
+}
+
+onlongtouch = function(e) { //this will clear the current selection if anything selected
+  
+  if (elemtype != "TEXT" && elemtype != "TEXTAREA" && elemtype != "INPUT" && elemtype != "PASSWORD" && elemtype != "SELECT" && elemtype != "EMBED" && elemtype != "OPTION") 
+  {
+    if (window.getSelection) {
+      if (window.getSelection().empty) {  // Chrome
+      window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {  // Firefox
+      window.getSelection().removeAllRanges();
+      }
+    } else if (document.selection) {  // IE?
+      document.selection.empty();
+    }
+    return false;
+  }
+};
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+    window.addEventListener("touchstart", touchstart, false);
+    window.addEventListener("touchend", touchend, false);
+});
+
+function wccp_pro_is_passive() {
+
+  var cold = false,
+  hike = function() {};
+
+  try {
+    const object1 = {};
+  var aid = Object.defineProperty(object1, 'passive', {
+  get() {cold = true}
+  });
+  window.addEventListener('test', hike, aid);
+  window.removeEventListener('test', hike, aid);
+  } catch (e) {}
+
+  return cold;
+}
+/*special for safari End*/
+</script>
+
+
+<script id="wpcp_disable_Right_Click" type="text/javascript">document.ondragstart=function(){return false;}
+function nocontext(e){return false;}document.oncontextmenu=nocontext;</script>
+<style>.unselectable{-moz-user-select:none;-webkit-user-select:none;cursor:default}html{-webkit-touch-callout:none;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:rgba(0,0,0,0)}</style>
+<script id="wpcp_css_disable_selection" type="text/javascript">var e=document.getElementsByTagName('body')[0];if(e){e.setAttribute('unselectable',on);}</script>
+
+
+<style type='text/css'>img#wpstats{display:none}</style>
+
+
+  <!-- ********************************* -->
+
+
+
+
+
+
+
+  <div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="disc.html"><i class="far fa-copyright"></i></a>
+  <a href="model.html" style="filter:drop-shadow(0 0 15px black);color:black;"><i class="fas fa-id-badge"></i></a>
+  <a href="login.html" ><i class="fas fa-sign-in-alt"></i></a>
+  <a href="report.html"><i class="fas fa-bug"></i></a>
+  <a href="subs.html"><i class="fas fa-credit-card"></i></a>
+</div>
+
+
+<script type="text/javascript">
+  /* Set the width of the side navigation to 250px and the left margin of the page content to 250px and add a black background color to body */
+function openNav() {
+  document.getElementById("mySidenav").style.width = "100px";
+  document.getElementById("main").style.marginLeft = "100px";
+  // sidenav border style
+  document.getElementById("mySidenav").style.border = "1px solid transparent";
+  document.getElementById("mySidenav").style.borderRadius = "25px";
+  document.getElementById("mySidenav").style.borderRight = "1px solid black";
+  
+}
+
+/* Set the width of the side navigation to 0 and the left margin of the page content to 0, and the background color of body to white */
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("main").style.marginLeft = "0";
+  // sidenav border style
+  document.getElementById("mySidenav").style.borderRight = "1px solid transparent";
+}
+
+</script>
+
+<span class="fas fa-bars" onclick="openNav()"></span>
+
+
+
+  <span id="modalbtn"><i class="fas fa-virus"></i></span>
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" style="color:red;font-size:30px;">&times;</span>
+    <img src="images/covid.png" style="float:right;width:350px;margin-right:250px;margin-top:120px;filter:drop-shadow(0 0 15px white);">
+    <p><h1><span style="color:red;">&#9888;</span> <u>Health information</u> <span style="color:red;">&#9888;</span></h1><br>
+      <h4>Protect yourself and others around you by knowing the facts and taking appropriate precautions.<br>
+      Follow advice provided by your local health authority.</h4><br>
+
+      <h3>To prevent the spread of COVID-<span style="color:red;">19</span>:</h3>
+      <ul>
+        <li>Clean your hands often. Use soap and water, or an alcohol-based hand rub.</li>
+        <li>Maintain a safe distance from anyone who is coughing or sneezing</li>
+        <li>Wear a mask when physical distancing is not possible.</li>
+        <li>Don’t touch your eyes, nose or mouth.</li>
+        <li>Cover your nose and mouth with your bent elbow or a tissue when you cough or sneeze.</li>
+        <li>Stay home if you feel unwell.</li>
+        <li>If you have a fever, cough and difficulty breathing, seek medical attention.</li>
+      </ul>
+
+      <h4>Calling in advance allows your healthcare provider to quickly direct you to the right health facility.<br>
+      This protects you, and prevents the spread of viruses and other infections.</h4>
+      <h3>Masks</h3>
+
+      <h4>Masks can help prevent the spread of the virus from the person wearing the mask to others. Masks<br>
+        alone do not protect against COVID-<span style="color:red;">19</span>, and should be combined with physical distancing and hand<br>
+      hygiene. Follow the advice provided by your local health authority.</h4><br>
+
+      <h3>&#127758; Learn more on 
+        <a href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019/question-and-answers-hub/q-a-detail/q-a-coronaviruses#:~:text=symptoms" style="text-decoration:none;cursor:pointer;" target="_blank">
+        Who.int</a></h3>
+    </p>
+  </div>
+
+</div>
+
+<div class="loc" id="loc">
+<center> <a href="#s1">A</a> - <a href="#s2">B</a> - <a href="#s3">C</a> - <a href="#s4">D</a> - <a href="#s5">E</a> - <a href="#s6">F</a> - <a href="#s7">G</a> - <a href="#s8">H</a> -
+  <a href="#s9">I</a> - <a href="#s10">J</a> - <a href="#s11">K</a> - <a href="#s12">L</a> - <a href="#s13">M</a> - <a href="#s14">N</a> - <a href="#s15">O</a> - <a href="#s16">P</a> - 
+  <a href="#s17">Q</a> - <a href="#s18">R</a> - <a href="#s19">S</a> - <a href="#s20">T</a> - <a href="#s21">U</a> - <a href="#s22">V</a> - <a href="#s23">W</a> - <a href="#s24">X</a> - 
+  <a href="#s25">Y</a> - <a href="#s26">Z</a></center> </div>
+
+	<div class="container">
+
+
+<!-- Alycia Debnam-Carey Bio -->
+
+
+<center><h1 id="s1">About Alycia Debnam-Carey</h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> July 20, 1993<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Sydney, Australia<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg1">NA</span> years old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Cancer</p>
+
+<div class="tv">
+  <img id="alycia" src="models/alycia/img92.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">After rising to fame on the reality series Next Stop Hollywood, she had a recurring role on The CW series The 100<br>
+  and played significant roles in the films Into the Storm and The Devil's Hand.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">Early in her screen acting career, she appeared in episodes of McLeod's Daughters and Dance Academy.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">In 2015, she took on the starring role of Alicia Clark on AMC's Fear the Walking Dead.</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">A native of Sydney, Australia, she studied music at the Newtown High School of the Performing Arts.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She co-starred with Brit Morgan in a 2015 German film titled Unfriend.</p>
+
+  <button class="btn1" onclick="window.open('models/alycia.html', '_self')">VIEW gallery >></button>
+  
+
+<center><button id="space"></button></center>
+
+
+<!-- Eliza Bio -->
+
+
+<center><h1 id="s5">About Eliza Taylo<span class="tit">r</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> October 24, 1989<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Melbourne, Australia<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg2">NA</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Scorpio</p>
+
+<div class="tv">
+  <img id="eliza" src="models/eliza/img89.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Soap star who had her breakout role as Janae Timmins on the Australian series Neighbours. She also starred as Rosie Cartwright<br>
+  in The Sleepover Club and played Clarke Griffin on the CW series The 100. </p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She made her acting debut as Sarah Redding on Pirate Islands in 2003.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She had her first film role in the 2012 thriller 6 Plots.</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She has two sisters and a brother. In 2019, she secretly wed her The 100 co-star Bob Morley.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She had a 2013 film role opposite Rachel Griffiths in Patrick.</p>
+
+  <button class="btn1" onclick="window.open('models/eliza.html', '_self')">VIEW gallery >></button>
+  
+
+<center><button id="space"></button></center>
+
+
+
+ <!-- florence pugh Bio -->
+
+
+ <center><h1 id="s6">About florence pug<span class="tit">h</span></h1></center>
+
+ <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> January 3, 1996<br>
+ <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> England<br>
+ <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg18">NA</span> Years Old<br>
+ <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Capricorn</p>
+
+<div class="tv">
+ <img id="pugh" src="models/florence/img65.jpg" />
+</div>
+
+ <h3>Abou<span>t</span></h3>
+ <p id="abt">Actress who starred in the 2019 films Midsommar and Little Women. She made her film debut in the 2014 feature<br>
+   The Falling and also appeared as Katherine in the 2016 drama Lady Macbeth.<br>
+ She was cast in the murder/mystery film The Maid.</p>
+
+ <h3>Before Fam<span>e</span></h3>
+ <p id="abt">A singer as well as an actress, she first began her career posting song covers to her self-titled YouTube channel in 2013.</p>
+
+ <h3>Trivi<span>a</span></h3>
+ <p id="abt">In 2015, she appeared in the TV movie Studio City alongside Heather Graham and Riley Smith.</p>
+
+ <h3>Family Lif<span>e</span></h3>
+ <p id="abt">She has two sisters Arabella and Rafaela. Rafaela appears in the 2014 film Born of War. Her brother, Toby Sebastian,<br>
+ appears as Trystane Martell in the hit HBO series Game of Thrones.<br>
+She began dating Zach Braff.</p>
+
+ <h3>Associated Wit<span>h</span></h3>
+ <p id="abt">She stars opposite Maxine Peake and Maisie Williams in the 2014 film The Falling.</p>
+
+ <button class="btn1" onclick="window.open('models/florence.html', '_self')">VIEW gallery >></button>
+
+
+ <center><button id="space"></button></center>
+
+
+
+ <!-- hailee Bio -->
+
+
+<center><h1 id="s8">About hailee steinfel<span class="tit">d</span></h1></center>
+
+<p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> December 11, 1996<br>
+<span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Los Angeles, CA<br>
+<span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg14">NA</span> Years Old<br>
+<span><i class="pad fas fa-globe"></i> Birth Sign:</span> Sagittarius</p>
+
+<div class="tv">
+<img id="hailee" src="models/hailee/img99.jpg" />
+</div>
+
+<h3>Abou<span>t</span></h3>
+<p id="abt">Became an Oscar nominee at age fourteen for her role in the 2010 film True Grit. In 2015, she appeared in Pitch Perfect 2<br>
+  and later starred in The Edge of Seventeen and Bumblebee. Also a singer, she released her debut EP Haiz,<br>
+featuring the single "Love Myself," in 2015. </p>
+
+<h3>Before Fam<span>e</span></h3>
+<p id="abt">She began acting in short films at the age of eight. She was homeschooled from age 11 through high school. </p>
+
+<h3>Trivi<span>a</span></h3>
+<p id="abt">In 2013, she starred as Juliet Capulet in Romeo and Juliet and played Petra in Ender's Game. She also provided her voice<br>
+for the 2018 animated film Spider-Man: Into the Spider-Verse. </p>
+
+<h3>Family Lif<span>e</span></h3>
+<p id="abt">Her parents are Cheri and Peter Steinfeld and she has an older brother named Griffin. She dated Niall Horan in 2018<br>
+and dated Cameron Smoller in 2017. </p>
+
+<h3>Associated Wit<span>h</span></h3>
+<p id="abt">She appeared in Taylor Swift's music video for "Bad Blood" in 2015.</p>
+
+<button class="btn1" onclick="window.open('models/hailee.html', '_self')">VIEW gallery >></button>
+
+<center><button id="space"></button></center>
+
+<!-- I -->
+<span id="s9"></span>
+
+
+<!-- Isabela Moner Bio -->
+
+  <center><h1>About Isabela Mone<span class="tit">r</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> July 10, 2001<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Cleveland, OH<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg3">18</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Cancer</p>
+
+<div class="tv">
+  <img id="isabela" src="models/isabela/img82.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Accomplished film, television, and stage actress also known as Isabela Merced who is notable for her role as<br>
+  CJ Martin on the Nickelodeon series 100 Things to Do Before High School.<br>
+  She starred in Transformers: The Last Knight in 2017 and she plays the titular character in the live-action 2019<br>
+  film Dora the Explorer.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">Acting since the age of 7, she made her Broadway debut at the age of 10 in a production of Evita.<br>
+  Her film debut came in 2013 when she appeared in The House that Jack Built.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She provided the voice of Kate in the Dora the Explorer spin-off Dora and Friends: Into the City!<br>
+  As a singer, she released her debut album Stopping Time in September 2015</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">In 2019, she announced that she was changing her stage name to Isabella Merced in honor of her late grandmother.<br>
+    She's half Peruvian. She was born and raised in Cleveland to parents Patrick and Katherine Moner.<br>
+  She is the middle child in between brothers Jared and Gyovanni. She briefly dated Jace Norman in 2016.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She starred with Jaheem Toombs and Owen Joyner on 100 Things to Do Before High School.<br>
+  As a singer, she's collaborated with Sebastián Yatra and Matt Hunter.</p>
+
+  <button class="btn1" onclick="window.open('models/isabela.html', '_self')">VIEW gallery >></button>
+  
+
+<center><button id="space"></button></center>
+
+
+<!-- Kelly Rohrbach Bio -->
+
+
+<center><h1 id="s11">About Kelly Rohrbac<span class="tit">h</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> January 18, 1990<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Connecticut<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg4">30</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Capricorn</p>
+
+<div class="tv">
+  <img id="kelly" src="models/kelly/img4.png" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Model and actress who began her modeling career with IMG. She was featured in the Sports Illustrated Swimsuit<br>
+  Issue in 2015 and previously in the Gap 2014 holiday campaign. Additionally, she was cast in Pamela Anderson's old role in the<br>
+2017 Baywatch movie.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She graduated from Georgetown University as a theater student after being recruited to the school to play Division I women's golf.<br>
+  She then attended the London Academy of Music and Dramatic Art.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">Some television credits of hers include Two and a Half Men, Rizzoli & Isles, The New Normal and the lead in The PET Squad Files.</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She moved to Los Angeles to pursue a career in acting. She is one of five children. She dated Leonardo DiCaprio in 2015.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She was a guest star in an episode of NBC's The New Normal, starring Justin Bartha.</p>
+
+  <button class="btn1" onclick="window.open('models/kelly.html', '_self')">VIEW gallery >></button>
+  
+
+<center><button id="space"></button></center>
+
+
+
+ <!-- kaley cuoco Bio -->
+
+
+ <center><h1>About kaley cuoc<span class="tit">o</span></h1></center>
+
+ <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> November 30, 1985<br>
+ <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Camarillo, CA<br>
+ <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg17">NA</span> Years Old<br>
+ <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Sagittarius</p>
+
+<div class="tv">
+ <img id="kaley" src="models/kaley/img60.jpg" />
+</div>
+
+ <h3>Abou<span>t</span></h3>
+ <p id="abt">Most notable for her roles portraying Bridget Hennessy on the ABC sitcom 8 Simple Rules and Penny<br>
+   on the CBS sitcom The Big Bang Theory.</p>
+
+ <h3>Before Fam<span>e</span></h3>
+ <p id="abt">When she was growing up, she became a nationally-ranked amateur tennis player.  She made her<br>
+ film debut as Karin in the 1995 film Virtuosity.</p>
+
+ <h3>Trivi<span>a</span></h3>
+ <p id="abt">She appeared in the 2007 film To Be Fat like Me and the 2014 film Authors Anonymous.</p>
+
+ <h3>Family Lif<span>e</span></h3>
+ <p id="abt">She was briefly engaged to Josh Resnik from October of 2011 until 2012. She was then married to Ryan Sweeting<br>
+   from 2013 to 2015. In 2016, she began dating Karl Cook and the two married on June<br>
+ 30, 2018. Her sister Briana competed on The Voice in 2013.</p>
+
+ <h3>Associated Wit<span>h</span></h3>
+ <p id="abt">She starred in the hit show The Big Bang Theory, which was created by Chuck Lorre.</p>
+
+ <button class="btn1" onclick="window.open('models/kaley.html', '_self')">VIEW gallery >></button>
+
+
+ <center><button id="space"></button></center>
+
+
+
+
+<!-- Lindsey morgan Bio -->
+
+
+<center><h1 id="s12">About Lindsey Morga<span class="tit">n</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> February 27, 1990<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Georgia<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg5">NA</span> years old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Pisces</p>
+
+<div class="tv">
+  <img id="lindsey" src="models/lindsey/img128.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Most famous for playing Kristina Davis on the ABC soap opera General Hospital, this Daytime Emmy-nominated<br>
+  actress also appeared on The CW's post-apocalyptic series The 100.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">Early in her career, she acted in a comedic horror film called Detention.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She appeared in two 2013 episodes of The Flip Side.</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">Although born in Georgia, she grew up in Houston, Texas as the daughter of Alice Burciaga and George Morgan.<br>
+  She has dated actor Shaun Sipos.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She and Kelly Thiebaud both joined the cast of General Hospital in 2012.</p>
+
+  <button class="btn1" onclick="window.open('models/lindsey.html', '_self')">VIEW gallery >></button>
+  
+
+<center><button id="space"></button></center>
+
+
+<!-- Marie Bio -->
+
+
+<center><h1 id="s13">About Marie Avgeropoulo<span class="tit">s</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> June 17, 1986<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Thunder Bay, Canada<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg6">NA</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Gemini</p>
+
+<div class="tv">
+  <img id="marie" src="models/marie/img49.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Canadian actress best known as Octavia Blake on The CW's The 100. She also played the role of Valerie Wooley in the<br>
+  2009 film I Love You Beth Cooper and had her breakout role as Kim Rhodes in Hunt to Kill.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She had one of her first roles as Taylor in the television series Supernatural in 2009.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She had an early role as Kirstie in the short-lived television series Cult. </p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She was in a relationship with Twilight heartthrob Taylor Lautner. Her boyfriend is actor Alain Moussi.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She appeared in the 2010 film Percy Jackson & the Olympians: The Lightning Thief with Logan Lerman. </p>
+
+  <button class="btn1" onclick="window.open('models/marie.html', '_self')">VIEW gallery >></button>
+  
+
+<center><button id="space"></button></center>
+
+
+
+  <!-- mila Bio -->
+
+
+  <center><h1>About mila kuni<span class="tit">s</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> August 14, 1983<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Chernivtsi, Ukraine<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg13">NA</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Leo</p>
+
+<div class="tv">
+  <img id="mila" src="models/mila/img85.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">First gained recognition for playing Jackie Burkhart on the TV series That '70s Show, then went on to star in such films<br>
+    as Forgetting Sarah Marshall, Friends with Benefits, Ted, Bad Moms and Black Swan. She's also provided the voice for<br>
+  Meg Griffin on the animated series Family Guy.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She enrolled in acting classes at age nine, where she met her future manager.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She made her big screen debut in the 1995 film Piranha. Prior to landing her leading role on That '70s Show, she appeared<br>
+  on such series as Days of Our Lives, Baywatch, 7th Heaven and Walker, Texas Ranger. </p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She dated former child star Macaulay Culkin from 2002 to 2011 then got married to That '70s Show co-star Ashton Kutcher<br>
+  n July 2015. She and Kutcher had their first child, a daughter named Wyatt,<br>
+on October 1, 2014. She gave birth to their second child, a son named Dimitri, on November 30, 2016.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She starred alongside Natalie Portman in the 2010 thriller Black Swan.</p>
+
+  <button class="btn1" onclick="window.open('models/mila.html', '_self')">VIEW gallery >></button>
+
+
+  <center><button id="space"></button></center>
+
+
+
+  <!-- nora Bio -->
+
+
+<center><h1 id="s14">About Nora Ekber<span class="tit">g</span></h1></center>
+
+<p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> August 30, 1996<br>
+<span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Boras, Sweden<br>
+<span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg11">NA</span> Years Old<br>
+<span><i class="pad fas fa-globe"></i> Birth Sign:</span> Virgo</p>
+
+<div class="tv">
+<img id="nora" src="models/nora/img1.jpg" />
+</div>
+
+<h3>Abou<span>t</span></h3>
+<p id="abt">Singer who rocketed to fame after she was featured on her brother AronChupa's solo single "I'm an Albatraoz"<br>
+which peaked at #1 on the Swedish Singles Chart and the Denmark charts.</p>
+
+<h3>Before Fam<span>e</span></h3>
+<p id="abt">She first joined the social media world with her Twitter in November of 2013.</p>
+
+<h3>Trivi<span>a</span></h3>
+<p id="abt">She has grown a significant social media following, with more than 100,000 followers on just her Instagram account.</p>
+
+<h3>Family Lif<span>e</span></h3>
+<p id="abt">Her father's name is Michael and her mother's name is Maria.</p>
+
+<h3>Associated Wit<span>h</span></h3>
+<p id="abt">Both she and Zara Larsson are popular singers from Sweden.</p>
+
+<button class="btn1" onclick="window.open('models/nora.html', '_self')">VIEW gallery >></button>
+
+
+<center><button id="space"></button></center>
+
+
+
+<!-- nathalie emmanuel Bio -->
+
+
+<center><h1>About Nathalie emmanue<span class="tit">l</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> March 2, 1989<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> England<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg20">NA</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Pisces</p>
+
+<div class="tv">
+  <img id="pugh" src="models/nathalie/img4.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">British actress known for her role as Sasha Valentine on the popular soap opera Hollyoaks. She was later<br>
+    cast as Missandei in the third season of the popular HBO series Game of Thrones. In 2019, she began starring<br>
+  in Hulu's Four Weddings and a Funeral. She also starred as Harriet in The Maze Runner Series.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She began her acting career by appearing in a Vodafone commercial.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She played the role of Nala in the London West End production of The Lion King.</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She and her sister Louise grew up in Southend-on-Sea, England.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She and Maisie Williams have both appeared on HBO's Game of Thrones.</p>
+
+  <button class="btn1" onclick="window.open('models/nathalie.html', '_self')">VIEW gallery >></button>
+
+
+  <center><button id="space"></button></center>
+
+
+
+<!-- Sophie Bio -->
+
+
+<center><h1 id="s19">About Sophie Van Oostenbrugg<span class="tit">e</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> February 6, 1994<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Netherlands<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg8">NA</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Aquarius</p>
+
+<div class="tv">
+  <img id="sophie" src="models/sophie/img8.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Certified personal trainer known for customizing different programs for people looking to stay in shape and keep healthy.<br>
+  She shares fitness photos including modeling shots in different exercise outfits with her over 1.1 million Instagram followers.</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She first began sharing her fitness related content to Instagram in March of 2017.</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">In addition to Instagram, she runs a YouTube channel which features videos of her demonstrating different workout<br>
+  routines and exercise techniques. She also posts vlogging content as well and shares the videos with her over 20,000 subscribers.</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She was born and raised in The Netherlands.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">Other fitness stars from the Netherlands known for offering personal training advice include Fit with Marit,<br>
+  Jessica Lauren Knehans, and Kaz van der Waard.</p>
+
+  <button class="btn1" onclick="window.open('models/sophie.html', '_self')">VIEW gallery >></button>
+
+
+  <center><button id="space"></button></center>
+
+
+
+  <!-- sylina Bio -->
+
+
+<center><h1>About sylina rui<span class="tit">z</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> Unknown<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> United States, Texas<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> ~26<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Unknown</p>
+
+<div class="tv">
+  <img id="margot" src="models/sylina/img40.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Unknown</p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">Unknown</p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">Unknown</p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">Unknown</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">Unknown</p>
+
+  <button class="btn1" onclick="window.open('models/sylina.html', '_self')">VIEW gallery >></button>
+
+
+  <center><button id="space"></button></center>
+
+
+
+  <!-- vanessa Bio -->
+
+
+<center><h1 id="s22">About Vanessa Hudgen<span class="tit">s</span></h1></center>
+
+  <p class="stats"><span><i class="fas fa-birthday-cake"></i> Birthday:</span> December 14, 1988<br>
+  <span><i class="pad fas fa-map-marker-alt"></i> Birthplace:</span> Salinas, CA<br>
+  <span><i class="pad fas fa-hourglass-end"></i> Age:</span> <span id="gg15">NA</span> Years Old<br>
+  <span><i class="pad fas fa-globe"></i> Birth Sign:</span> Sagittarius</p>
+
+<div class="tv">
+  <img id="vanessa" src="models/vanessa/img28.jpg" />
+</div>
+
+  <h3>Abou<span>t</span></h3>
+  <p id="abt">Singer and actress who starred in Disney's High School Musical. Her debut album, V, was certified Gold in 2006.<br>
+    She portrayed Rizzo in the 2016 Fox broadcast of Grease Live! and landed a starring role in NBC's Powerless.<br>
+  n 2017, she became a judge on So You Think You Can Dance. </p>
+
+  <h3>Before Fam<span>e</span></h3>
+  <p id="abt">She played roles in several local musicals before traveling to Los Angeles to pursue a career in acting. </p>
+
+  <h3>Trivi<span>a</span></h3>
+  <p id="abt">She played a role in Journey 2: The Mysterious Island with Dwayne Johnson in 2012. </p>
+
+  <h3>Family Lif<span>e</span></h3>
+  <p id="abt">She was born to Greg Hudgens and Gina Guangco and she has a younger sister named Stella. She began a relationship with<br>
+    co-star Zac Efron in 2005, and they ended the relationship in December 2010. She then dated actor Austin Butler<br>
+   from 2011 to 2020. She began dating Cole Tucker in late 2020.</p>
+
+  <h3>Associated Wit<span>h</span></h3>
+  <p id="abt">She was in the movie Thirteen with Evan Rachel Wood.</p>
+
+  <button class="btn1" onclick="window.open('pass.html', '_self')">VIEW gallery >></button>
+
+
+  <center><button id="space"></button></center>
+
+
+
+  
+<br>
+<br>
+
+</div> 
+
+
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("modalbtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script> 
+
+
+
+
+<div class="toppage" id="toppage">
+<a href="#"><img src="images/up.png" width="50px"></a>
+</div>
+
+
+
+<!-- ******************************************* -->
+<!-- ******************************************* -->
+
+
+<script type="text/javascript">
+  // sophie
+  var birthDate = new Date(1994, 2, 6, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg7").innerText = age;
+</script>
+
+<script type="text/javascript">
+  // isabela
+  var birthDate = new Date(2001, 7, 10, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg3").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // kelly
+  var birthDate = new Date(1990, 1, 18, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg4").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // eliza
+  var birthDate = new Date(1989, 10, 24, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg2").innerText = age;
+</script>
+
+<script type="text/javascript">
+  // marie
+  var birthDate = new Date(1986, 6, 17, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg6").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // lindsey
+  var birthDate = new Date(1990, 2, 27, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg5").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // Lexa
+  var birthDate = new Date(1993, 7, 20, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg1").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // sophie
+  var birthDate = new Date(1994, 2, 6, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg8").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // natalee
+  var birthDate = new Date(1999, 2, 17, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg9").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // lizzy
+  var birthDate = new Date(1998, 7, 22, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg10").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // emilia
+  var birthDate = new Date(1996, 8, 30, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg11").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // margot
+  var birthDate = new Date(1990, 6, 2, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg12").innerText = age;
+</script>
+
+
+
+<script type="text/javascript">
+  // mila
+  var birthDate = new Date(1983, 8, 14, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg13").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // hailee
+  var birthDate = new Date(1996, 12, 11, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg14").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // vanessa
+  var birthDate = new Date(1988, 12, 14, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg15").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // ana de armas
+  var birthDate = new Date(1988, 4, 30, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg16").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // kaley cuoco
+  var birthDate = new Date(1985, 11, 30, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg17").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // florence pugh
+  var birthDate = new Date(1996, 1, 3, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg18").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // lauren
+  var birthDate = new Date(1978, 11, 29, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg19").innerText = age;
+</script>
+
+
+<script type="text/javascript">
+  // nathalie
+  var birthDate = new Date(1989, 3, 2, 0, 0, 0, 0);
+
+// The current date
+var currentDate = new Date();
+
+// The age in years
+var age = currentDate.getFullYear() - birthDate.getFullYear();
+
+// Compare the months
+var month = currentDate.getMonth() - birthDate.getMonth();
+
+// Compare the days
+var day = currentDate.getDate() - birthDate.getDate();
+
+// If the date has already happened this year
+if ( month < 0 || month == 0 && day < 0 )
+{
+    age--;
+}
+
+document.getElementById("gg20").innerText = age;
+</script>
+
+
+
+</body>
+</html>

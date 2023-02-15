@@ -1,0 +1,711 @@
+@import "https://use.fontawesome.com/releases/v5.15.3/js/all.js";
+
+html
+{
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+/*body::-webkit-scrollbar {
+  display: none;
+}*/
+
+body {
+  /*background:
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);*/
+  background-color: lightgray;
+  background-size: 20px 20px;
+  transition: all .3s ease;
+  height: 100%;
+}
+
+/* scroll bar style */
+
+ 
+::-webkit-scrollbar {
+  width: 10px;
+  transition: all .3s ease;
+}
+
+ /*Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 40px;
+  overflow: hidden;
+  outline: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 40px;
+  transition: all .3s ease;
+}
+
+ /*Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: black; 
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px black);
+}
+
+
+#gg1,#gg2,#gg3,#gg4,#gg5,#gg6,#gg7,#gg8,#gg9,#gg10,
+#gg11,#gg12,#gg13,#gg14,#gg15,#gg16,#gg17,#gg18,#gg19,#gg20
+{
+  color: black;
+  font-weight: normal;
+}
+
+
+
+
+.fa-virus
+{
+  font-size: 25px;
+  color: black;
+  right: 32px;
+  overflow: hidden;
+  outline: none;
+  cursor: pointer;
+  transition: all .3s ease;
+  position: absolute;
+}
+
+.fa-virus:hover
+{
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 10px black);
+}
+
+
+.tv
+{
+  max-width: 200px;
+  margin-left: 10px;
+  margin-top: 180px;
+  display: inline-block;
+}
+
+.tv img
+{
+  max-width: 100%;
+  cursor: pointer;
+  outline: none;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 999;
+}
+
+
+
+.tv > img
+{
+  visibility: visible;
+  display: block;
+  z-index: 999;
+  
+}
+
+.tv:hover > img
+{
+  opacity: 1;
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 15px black);
+  z-index: 999;
+}
+
+
+
+/* handle scroll bar ends */
+
+img {
+  max-width: 100%;
+  transition: all 0.3s ease;
+}
+.un-photo {
+  max-width: 200px;
+  margin-left: 50px;
+  margin-top: 180px;
+  visibility: hidden;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.un-photo > img {
+  visibility: visible;
+  display: block;
+  transition: all 10s ease;
+}
+.un-photo:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 999;
+  visibility: visible;
+  opacity: 0;
+  transition: opacity 0.4s linear;
+  pointer-events: none;
+}
+.un-photo:hover {
+  z-index: 999;
+}
+.un-photo:hover > img {
+  opacity: 1;
+  transform: scale(1.2);
+  transition: all 10s ease;
+}
+/* ---------------------------------- */
+.un-photo__popup {
+  z-index: 99;
+  position: fixed;
+  display: inline-block;
+  width: 80%;
+  max-width: 600px;
+  max-height: 90vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: solid 1px red;
+  pointer-events: none;
+  background: inherit;
+  visibility: visible;
+  z-index: 999;
+}
+.un-photo__popup img {
+  opacity: 1;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  outline: solid 1px blue;
+}
+@supports (--row-size: calc(100% / var(--row-total))) {
+  .un-photo__popup {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.4s linear;
+  }
+  .un-photo__row {
+    --row-size: calc(100% / var(--row-total));
+    position: absolute;
+    width: 100%;
+    left: 0%;
+    top: calc(0% + (var(--row-size) * var(--row-index)));
+    height: var(--row-size);
+    background: inherit;
+    overflow: hidden;
+    transform-origin: 0 0;
+    transform-origin: calc(var(--random) * 50%) 50%;
+    transform: scale(0.8) translate(0%, calc(var(--random) * 20%));
+    transform: translate(0, 0) scale(1);
+    animation-name: photo-bounce;
+    animation-fill-mode: both;
+    animation-direction: forwards;
+    animation-delay: 0.1s;
+    animation-duration: 0.4s;
+    animation-timing-function: steps(1);
+  }
+  .un-photo__row-inner {
+    opacity: 1;
+    visibility: visible;
+    position: absolute;
+    background: inherit;
+    width: 100%;
+    height: calc(100% * var(--row-total));
+    transform: translateY(calc(-1 * ( 100% / var(--row-total) ) * var(--row-index)));
+  }
+  .un-photo:hover .un-photo__popup {
+    opacity: 1;
+  }
+  .un-photo:hover:before {
+    opacity: 0.4;
+  }
+  .un-photo:hover .un-photo__row {
+    animation-name: photo-bounce2;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-direction: reverse;
+    animation-timing-function: steps(1);
+  }
+}
+@keyframes photo-bounce {
+  25% {
+    transform: translate(-10%, 0%) scale(1);
+  }
+  50% {
+    transform: translate(10%, -2%) scale(1.3);
+  }
+  75% {
+    transform: translate(-3%, 2%) scale(0.9);
+  }
+}
+@keyframes photo-bounce2 {
+  25% {
+    transform: translate(5%, 0%) scale(1);
+  }
+  50% {
+    transform: translate(-10%, -2%) scale(1.3);
+  }
+  75% {
+    transform: translate(10%, 5%) scale(0.9);
+  }
+}
+
+/* *********************************************** */
+/* --------------------OTHER---------------------- */
+
+
+
+
+
+
+.container
+    {
+      position: absolute;
+      top: 80px;
+      left: 100px;
+      right: 100px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+.container h1
+    {
+      text-transform: uppercase;
+      font-family: FarCry;
+      text-decoration: underline red;
+      letter-spacing: 2px;
+      color: black;
+      filter: drop-shadow(0 0 15px black);
+    }
+
+
+    .container h3
+    {
+      text-transform: uppercase;
+      font-family: FarCry;
+      text-decoration: underline red;
+      letter-spacing: 2px;
+      color: black;
+      filter: drop-shadow(0 0 15px black);
+      z-index: 1;
+    }
+
+    .container .stats
+    {
+      color: black;
+    }
+
+    .container .stats span
+    {
+      color: red;
+      font-weight: bold;
+      filter: drop-shadow(0 0 15px red);
+    } 
+
+    
+    .container .tv 
+    {
+      z-index: 10;
+    }
+
+.container p
+{
+  font-size: 18px;
+  color: black;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.container .pad
+{
+  padding-top: 5px;
+}
+
+
+.container #space
+{
+  border: 5px;
+  border-radius: 50%;
+  width: 900px;
+  color: black;
+  background-color: black;
+  filter: drop-shadow(0 0 15px black);
+}
+
+.container .abt
+{
+  color: white;
+}
+
+.container img
+{
+  margin-right: 445px;
+  margin-top: -180px;
+}
+
+
+
+.container i
+{
+  color: white;
+}
+
+.container .btn
+{
+  display: inline-block;
+  text-decoration: none;
+}
+/*
+.btn8
+{
+  display: inline-block;
+}*/
+
+.btn1
+{
+  border: 2px solid black;
+  color: black;
+  border-radius: 45px;
+  padding: 12px 12px 12px 12px;
+  background-color: transparent;
+  text-transform: uppercase;
+  font-weight: bold;
+  outline: none !important;
+  transition: all 0.3s ease;
+}
+
+.btn1:hover
+{
+  cursor: pointer;
+  border: 2px solid red;
+  color: red;
+  border-radius: 45px;
+  transition: all 0.3s ease;
+  -webkit-box-shadow: 0 0 30px 0 red;
+}
+
+.toppage
+{
+  right: 25px;
+  bottom: 0;
+  position: fixed;
+  transition: all 0.3s ease;
+}
+
+.toppage:hover
+{
+  filter: drop-shadow(0 0 15px black);
+}
+
+.locator
+{
+  font-family: FarCry;
+  color: red;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  overflow: hidden;
+  letter-spacing: 1px;
+  display: inline;
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  transform: translate(-50%, -2%);
+}
+
+.locator a
+{
+  text-decoration: none;
+  color: red;
+  outline: none;
+  cursor: pointer;
+  font-family: FarCry;
+  overflow: hidden;
+  letter-spacing: 1px;
+}
+
+.locator a:hover
+{
+  text-decoration: underline yellow;
+  color: yellow;
+  transition: 0.3s;
+}
+
+
+.fa-bars
+{
+  float: left;
+  top: 380px;
+  position: fixed;
+  text-decoration: none;
+  font-size: 30px;
+  color: black;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.fa-bars:hover
+{
+  color: black;
+  filter: drop-shadow(0 0 15px black);
+  opacity: 1;
+  transition: 0.3s;
+}
+
+
+.sidenav {
+  height: 220px;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 250px;
+  left: 0;
+  background-color: transparent;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+
+.sidenav a, .pagebtn {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  font-family: FarCry;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+
+.sidenav a:hover, .pagebtn:hover {
+  color: black;
+  transition: .3s;
+  filter: drop-shadow(0 0 15px black);
+}
+
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  color: #818181;
+  transition: all .3s ease;
+  font-size: 36px;
+}
+
+.sidenav .closebtn:hover
+{
+  color: red;
+  filter: drop-shadow(0 0 15px red);
+  transition: .3s;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+
+
+/* covid-19 modal box start */
+
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  transition: all .3s ease;
+  animation: fadein .3s;
+  z-index: 999;
+}
+
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: black;
+  margin: auto;
+  padding: 20px;
+  border-radius: 40px;
+  color: white;
+  width: 80%;
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px black);
+}
+
+/* The Close Button */
+.modal .close {
+  color: red;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  transition: all .3s ease;
+}
+
+.modal .close:hover,
+.modal .close:focus {
+  text-decoration: none;
+  cursor: pointer;
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px red);
+}
+
+/* covid-19 modal box ends */
+
+
+
+.modal u 
+{
+  text-decoration: underline solid 2px white;
+}
+
+
+
+
+/* home page modal box start */
+
+
+.page1 {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  transition: all .3s ease;
+  animation: fadein .3s;
+  z-index: 999;
+}
+
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
+}
+
+/* Modal Content */
+.page-content {
+  background-color: black;
+  margin: auto;
+  align-items: center;
+  padding: 20px;
+  border-radius: 40px;
+  color: white;
+  width: 50%;
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px yellow);
+}
+
+/* The Close Button */
+.page1 .close1 {
+  color: white;
+  background-color: red;
+  font-size: 28px;
+  font-weight: bold;
+  transition: all .3s ease;
+  border: 1px solid red;
+  border-radius: 30px;
+}
+
+.page1 .close1:hover,
+.page1 .close1:focus {
+  text-decoration: none;
+  cursor: pointer;
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px red);
+}
+
+/* The stay Button */
+.page1 .stay {
+  color: white;
+  background-color: green;
+  font-size: 28px;
+  font-weight: bold;
+  transition: all .3s ease;
+  border: 1px solid green;
+  border-radius: 30px;
+}
+
+.page1 .stay:hover,
+.page1 .stay:focus {
+  text-decoration: none;
+  cursor: pointer;
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px green);
+}
+
+/* home page modal box ends */
+
+
+/* header page location buttons */
+
+.loc a {
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: default;
+  outline: none;
+  overflow: hidden;
+  transition: all .3s ease;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.loc a:hover {
+  transition: all .3s ease;
+  filter: drop-shadow(0 0 15px black);
+  border-bottom: 1px solid black;
+  border-radius: 45px;
+}
+
+

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title> Report a Bug </title>
+
+  <link rel="stylesheet" type="text/css" href="css/report.css">
+  <link rel="shortcut icon" href="images/adult1.png" type="image/vnd.microsoft.icon">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/js/all.js">
+  <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js"></script>
+
+</head>
+
+<body oncontextmenu="return false;">
+
+
+<span class="fas fa-backspace" onclick="goBack()"></span>
+
+<script>
+function goBack() {
+  window.history.back();
+}
+</script>
+
+  <center><form method="get" action="action.php">
+  <img src="images/adult3.png" style="width:120px;height:46.7px;">
+  <img src="images/adult1.jpg" style="width:460px;" class="image1"><br>
+  <!-- E-mail here -->
+  <input type="email" name="email" placeholder="E-mail*" required autocomplete="off">
+  <!-- fistName here -->
+  <input type="name" name="fname" placeholder="First Name*" required autocomplete="off">
+  <!-- lastName here -->
+  <input type="name" name="lname" placeholder="Last Name*" required autocomplete="off">
+  <!-- text area -->
+  <textarea name="message" placeholder="What's the problem?*" required autocomplete="off"></textarea>
+  <button type="submit" class="btn1" onclick="myFunction()">REPORT BUG <i class="fas fa-bug"></i></button><br>
+  <button type="reset" class="btn2" onclick="myFunction1()">CLEAR</button><br><br>
+  <p> I have read and i agree with <a href="https://www.websitepolicies.com/policies/view/Ao1Ip9tr" target="_blank">Terms & Conditions</a> - 
+  <a href="https://www.websitepolicies.com/policies/view/4y0p4ydL" target="_blank">Privacy Policy</a> </p>
+</form></center>
+
+
+
+</body>
+</html>

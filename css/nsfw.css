@@ -1,0 +1,508 @@
+@import "https://use.fontawesome.com/releases/v5.15.1/css/all.css";
+
+html
+{
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  display: flex;
+  background-color: #0e0e0e;
+  transition: all .3s ease;
+  height: 100%;
+}
+
+
+#gg,#gg1,#gg2,#gg3,#gg4,#gg5,#gg6,#gg7,#gg8,#gg9,#gg10,#gg11,#gg12,#gg13,#gg14,#gg15,#gg16
+{
+  color: red;
+  text-decoration: none;
+  filter: drop-shadow(0 0 15px red);
+}
+
+
+.tv
+{
+  max-width: 200px;
+  margin-left: 10px;
+  margin-top: 180px;
+  display: inline-block;
+}
+
+.tv img
+{
+  max-width: 100%;
+  cursor: pointer;
+  outline: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tv > img
+{
+  visibility: visible;
+  display: block;
+  
+}
+
+.tv:hover > img
+{
+  opacity: 1;
+  transform: scale(1.2);
+  -webkit-box-shadow: 0px 0px 30px 0px white;
+}
+
+
+
+/* handle scroll bar ends */
+
+img {
+  max-width: 100%;
+  transition: all 0.3s ease;
+}
+.un-photo {
+  max-width: 200px;
+  margin-left: 50px;
+  margin-top: 180px;
+  visibility: hidden;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.un-photo > img {
+  visibility: visible;
+  display: block;
+  transition: all 10s ease;
+}
+.un-photo:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  z-index: 2;
+  visibility: visible;
+  opacity: 0;
+  transition: opacity 0.4s linear;
+  pointer-events: none;
+}
+.un-photo:hover {
+  z-index: 999;
+}
+.un-photo:hover > img {
+  opacity: 1;
+  transform: scale(1.2);
+  transition: all 10s ease;
+}
+/* ---------------------------------- */
+.un-photo__popup {
+  z-index: 99;
+  position: fixed;
+  display: inline-block;
+  width: 80%;
+  max-width: 600px;
+  max-height: 90vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: solid 1px red;
+  pointer-events: none;
+  background: inherit;
+  visibility: visible;
+  z-index: 999;
+}
+.un-photo__popup img {
+  opacity: 1;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  outline: solid 1px blue;
+}
+@supports (--row-size: calc(100% / var(--row-total))) {
+  .un-photo__popup {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.4s linear;
+  }
+  .un-photo__row {
+    --row-size: calc(100% / var(--row-total));
+    position: absolute;
+    width: 100%;
+    left: 0%;
+    top: calc(0% + (var(--row-size) * var(--row-index)));
+    height: var(--row-size);
+    background: inherit;
+    overflow: hidden;
+    transform-origin: 0 0;
+    transform-origin: calc(var(--random) * 50%) 50%;
+    transform: scale(0.8) translate(0%, calc(var(--random) * 20%));
+    transform: translate(0, 0) scale(1);
+    animation-name: photo-bounce;
+    animation-fill-mode: both;
+    animation-direction: forwards;
+    animation-delay: 0.1s;
+    animation-duration: 0.4s;
+    animation-timing-function: steps(1);
+  }
+  .un-photo__row-inner {
+    opacity: 1;
+    visibility: visible;
+    position: absolute;
+    background: inherit;
+    width: 100%;
+    height: calc(100% * var(--row-total));
+    transform: translateY(calc(-1 * ( 100% / var(--row-total) ) * var(--row-index)));
+  }
+  .un-photo:hover .un-photo__popup {
+    opacity: 1;
+  }
+  .un-photo:hover:before {
+    opacity: 0.4;
+  }
+  .un-photo:hover .un-photo__row {
+    animation-name: photo-bounce2;
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+    animation-direction: reverse;
+    animation-timing-function: steps(1);
+  }
+}
+@keyframes photo-bounce {
+  25% {
+    transform: translate(-10%, 0%) scale(1);
+  }
+  50% {
+    transform: translate(10%, -2%) scale(1.3);
+  }
+  75% {
+    transform: translate(-3%, 2%) scale(0.9);
+  }
+}
+@keyframes photo-bounce2 {
+  25% {
+    transform: translate(5%, 0%) scale(1);
+  }
+  50% {
+    transform: translate(-10%, -2%) scale(1.3);
+  }
+  75% {
+    transform: translate(10%, 5%) scale(0.9);
+  }
+}
+
+/* *********************************************** */
+/* --------------------OTHER---------------------- */
+
+
+
+
+.container
+    {
+      position: absolute;
+      top: 80px;
+      left: 100px;
+      right: 100px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+.container h1
+    {
+      text-transform: uppercase;
+      font-family: FarCry;
+      text-decoration: underline;
+      letter-spacing: 2px;
+      color: white;
+      filter: drop-shadow(0 0 15px white);
+    }
+
+    .container h1 span
+    {
+      color: red;
+      text-decoration: underline red;
+      filter: drop-shadow(0 0 15px red);
+    }
+
+
+    .container h3
+    {
+      text-transform: uppercase;
+      font-family: FarCry;
+      text-decoration: underline;
+      letter-spacing: 2px;
+      color: white;
+      filter: drop-shadow(0 0 15px white);
+    }
+
+    .container .stats
+    {
+      color: red;
+      
+    }
+
+    .container .stats span
+    {
+      color: white;
+      filter: drop-shadow(0 0 15px white);
+    } 
+
+    .container h3 span
+    {
+      color: red;
+      text-decoration: underline red;
+      filter: drop-shadow(0 0 15px red);
+    }
+
+.container p
+{
+  font-size: 18px;
+  color: white;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.container .pad
+{
+  padding-top: 5px;
+}
+
+.container h3
+{
+  text-transform: uppercase;
+  text-decoration: underline;
+  font-family: FarCry;
+  color: white;
+}
+
+.container #space
+{
+  border: 5px;
+  border-radius: 50%;
+  width: 900px;
+  color: yellow;
+  background-color: yellow;
+}
+
+.container .abt
+{
+  color: white;
+}
+
+.container img
+{
+  margin-right: 445px;
+  margin-top: -180px;
+}
+
+.container .tit
+{
+  color: red;
+  text-decoration: underline red;
+}
+
+.container i
+{
+  color: white;
+}
+
+.container .btn
+{
+  display: inline-block;
+  text-decoration: none;
+}
+/*
+.btn8
+{
+  display: inline-block;
+}*/
+
+.btn1
+{
+  border: 2px solid white;
+  color: white;
+  border-radius: 45px;
+  padding: 12px 12px 12px 12px;
+  background-color: transparent;
+  text-transform: uppercase;
+  font-weight: bold;
+  outline: none !important;
+  transition: all 0.3s ease;
+}
+
+.btn1:hover
+{
+  cursor: pointer;
+  border: 2px solid white;
+  background-color: white;
+  color: black;
+  border-radius: 45px;
+  transition: 0.3s;
+  -webkit-box-shadow: 0 0 30px 0 white;
+}
+
+.toppage
+{
+  right: 25px;
+  bottom: 0;
+  position: fixed;
+  transition: all 0.3s ease;
+}
+
+.toppage:hover
+{
+  filter: drop-shadow(0 0 15px yellow);
+}
+
+.locator
+{
+  font-family: FarCry;
+  color: red;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  overflow: hidden;
+  letter-spacing: 1px;
+  display: inline;
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  transform: translate(-50%, -2%);
+}
+
+.locator a
+{
+  text-decoration: none;
+  color: red;
+  outline: none;
+  cursor: pointer;
+  font-family: FarCry;
+  overflow: hidden;
+  letter-spacing: 1px;
+}
+
+.locator a:hover
+{
+  text-decoration: underline yellow;
+  color: yellow;
+  transition: 0.3s;
+}
+
+.locator a:active
+{
+  color: red;
+  text-decoration: underline yellow;
+}
+
+
+.fa-bars
+{
+  float: left;
+  text-decoration: none;
+  font-size: 30px;
+  color: yellow;
+  cursor: pointer;
+  outline: none;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.fa-bars:hover
+{
+  color: yellow;
+  filter: drop-shadow(0 0 15px yellow);
+  opacity: 1;
+  transition: 0.3s;
+}
+
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav .nsfw
+{
+  padding: 8px 8px 8px 32px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  font-size: 25px;
+  color: red;
+  font-family: FarCry;
+  display: block;
+  filter: drop-shadow(0 0 15px red);
+}
+
+.sidenav .nsfw:hover {
+  color: red;
+  transition: .3s;
+  filter: drop-shadow(0 0 15px red);
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  letter-spacing: 1px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  font-family: FarCry;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.sidenav a:hover {
+  color: yellow;
+  transition: .3s;
+  filter: drop-shadow(0 0 15px yellow);
+}
+
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  color: #818181;
+  transition: all .3s ease;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.sidenav .closebtn:hover
+{
+  color: yellow;
+  filter: drop-shadow(0 0 15px yellow);
+  transition: .3s;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
